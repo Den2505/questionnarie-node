@@ -1,0 +1,47 @@
+{
+  "name": "questionaire_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon --watch backend ./src/app.js",
+    "debug": "nodemon --watch backend --inspect ./src/app.js",
+    "test": "NODE_ENV=test mocha --exit --recursive ./src/tests/support/hooks.js './backend/tests/**/*.spec.js'",
+    "docker-build": "docker-compose build --no-cache",
+    "docker-start": "docker-compose up",
+    "docker-clean": "docker-compose stop && docker-compose down --rmi local --volumes --remove-orphans",
+    "eslint": "eslint --color ./",
+    "precommit": "npm run eslint"
+  },
+
+  "dependencies": {
+    "bunyan": "^1.8.12",
+    "crypto-js": "^3.1.9-1",
+    "koa": "^2.7.0",
+    "koa-body": "^4.1.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-bunyan": "^1.0.2",
+    "koa-generic-session": "^2.0.1",
+    "koa-generic-session-sequelize": "^2.2.0",
+    "koa-passport": "^4.1.3",
+    "koa-router": "^7.4.0",
+    "koa-session": "^5.10.1",
+    "koa-session-sequelize": "^0.0.3",
+    "koa-static": "^5.0.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "sequelize": "^5.7.6",
+    "js-md5": "^0.7.3"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "husky": "^2.1.0",
+    "nodemon": "^1.18.11",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^6.1.4"
+  },
+  "engines": {
+    "node": "10"
+  }
+}
