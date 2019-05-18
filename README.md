@@ -22,4 +22,4 @@
 
 
 ## EER Database diagram
-![alt text](https://dev.omgtu.ru/eduproc/backend-of-questionnaire-system/master/eer.png)
+![alt text](https://dev.omgtu.ru/eduproc/backend-of-questionnaire-system/blob/master/eer.png)
