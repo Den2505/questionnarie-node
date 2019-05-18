@@ -20,3 +20,6 @@
 * npm run docker-start: start mysql within docker containers
 * npm run docker-clean: turn containers off.
 
+
+## EER Database diagram
+![alt text](https://dev.omgtu.ru/eduproc/backend-of-questionnaire-system/master/eer.png)
