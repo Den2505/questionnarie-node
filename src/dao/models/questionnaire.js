@@ -4,7 +4,11 @@ const Sequelize = require(`sequelize`);
 module.exports = function (sequelie) {
     const Questionnaire = sequelie.define('Questionnaire', {
             json: {
-                type: Sequelize.STRING(1000),
+                type: Sequelize.JSON,
+                allowNull: false
+            },
+            available: {
+                type: Sequelize.BOOLEAN,
                 allowNull: false
             }
         },

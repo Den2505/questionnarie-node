@@ -13,11 +13,11 @@ module.exports = function (sequelize) {
             tableName: 'subjects',
             freezeTableName: true,
             timestamps: true
-        })
+        });
 
     Subjects.associate = function (models) {
         Subjects.hasMany(models.Disciplines);
-    }
+    };
 
     return Subjects;
-}
+};

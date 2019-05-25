@@ -39,10 +39,18 @@ Object.keys(models).forEach((modelName) => {
     }
 });
 
-const sequelizePromise =  sequelize.sync({force: true}) ;
+const sequelizePromise =  sequelize.sync(/*{force: true}*/) ;
 
 module.exports = {
     sequelize,
     sequelizePromise,
-
+    Employees,
+    Disciplines,
+    Results,
+    Answers,
+    Expire,
+    Questionnaire,
+    Groups,
+    Students,
+    Subjects
 };
