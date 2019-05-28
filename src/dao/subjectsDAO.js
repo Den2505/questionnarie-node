@@ -1,7 +1,7 @@
 const {Subjects} = require('./models');
 
-async function addSubject({id, name}) {
-   return await Subjects.create({id, name})
+async function addSubject({id, name},t) {
+   return await Subjects.findOrCreate({where:{id, name}, transaction: t})
 }
 
 module.exports = {addSubject};

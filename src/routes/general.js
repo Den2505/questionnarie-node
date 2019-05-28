@@ -11,6 +11,7 @@ const disciplinesDAO = require('../dao/disciplinesDAO');
 const generalRouter = {
 
     getQuestionnaire: async (ctx) => {
+        ctx.cross
         const questionnaire = await questionnaireDAO.getAvailableQuestionnaire();
         if (questionnaire === null) {
             ctx.throw(404, 'Questionnaire not available')
@@ -20,17 +21,22 @@ const generalRouter = {
 
     addAnswer: async (ctx) => {
         const {
-            student, group, employee, subject, features,
+            student, group, employee, subject, //features,
             answerJSON, questionnaire_id
         } = ctx.request.body;
 
-        await groupsDAO.addGroup(group);
-        await studentsDAO.addStudent(student);
-        const {id: employee_id} = await employeesDAO.addEmployee(employee);
-        const {id: subject_id} = await subjectsDAO.addSubject(subject);
-        const {id: discipline_id} = await disciplinesDAO.addDescipline({employee_id, subject_id});
-        const answer = {json: answerJSON, questionnaire_id, discipline_id};
-        await answersDAO.addAnswer(answer);
+        sequelize.transaction(async t => {
+            const {id:group_id} = (await groupsDAO.addGroup(group,t))[0];
+            await studentsDAO.addStudent(Object.assign({},student,{group_id}), t);
+            const {id: employee_id} = (await employeesDAO.addEmployee(employee,t))[0];
+            const {id: subject_id} = (await subjectsDAO.addSubject(subject,t))[0];
+            const {id: discipline_id} = (await disciplinesDAO.addDescipline({employee_id, subject_id},t))[0];
+            const answer = {json: answerJSON, questionnaire_id, discipline_id};
+            await answersDAO.addAnswer(answer,t);
+        })
+
+
+
     }
 
 };
