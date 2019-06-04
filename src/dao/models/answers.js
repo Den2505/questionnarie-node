@@ -4,7 +4,7 @@ const Sequelize = require(`sequelize`);
 module.exports = function (sequelize) {
     const Answers = sequelize.define('Answers', {
             json: {
-                type: Sequelize.STRING(500),
+                type: Sequelize.JSON,
                 allowNull: false
             },
             questionnaire_id: {

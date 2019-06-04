@@ -9,8 +9,9 @@ module.exports = function (sequelize) {
                     model: 'students',
                     key: 'id'
                 },
-                primaryKey: true,
-                allowNull: false
+                //primaryKey: true,
+                allowNull: false,
+                unique: 'pair_id_index'
             },
             discipline_id: {
                 type: Sequelize.INTEGER,
@@ -19,7 +20,8 @@ module.exports = function (sequelize) {
                     model: 'disciplines',
                     key: 'id'
                 },
-                primaryKey: true,
+               // primaryKey: true,
+                unique: 'pair_id_index'
 
             },
             expire: {

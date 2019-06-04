@@ -7,11 +7,11 @@ const employeesDAO = require('../dao/employeesDAO');
 const subjectsDAO = require('../dao/subjectsDAO');
 const answersDAO = require('../dao/answersDAO');
 const disciplinesDAO = require('../dao/disciplinesDAO');
+const expireDAO = require('../dao/expireDAO');
 
 const generalRouter = {
 
     getQuestionnaire: async (ctx) => {
-        ctx.cross
         const questionnaire = await questionnaireDAO.getAvailableQuestionnaire();
         if (questionnaire === null) {
             ctx.throw(404, 'Questionnaire not available')
@@ -24,18 +24,27 @@ const generalRouter = {
             student, group, employee, subject, //features,
             answerJSON, questionnaire_id
         } = ctx.request.body;
-
-        sequelize.transaction(async t => {
-            const {id:group_id} = (await groupsDAO.addGroup(group,t))[0];
-            await studentsDAO.addStudent(Object.assign({},student,{group_id}), t);
-            const {id: employee_id} = (await employeesDAO.addEmployee(employee,t))[0];
-            const {id: subject_id} = (await subjectsDAO.addSubject(subject,t))[0];
-            const {id: discipline_id} = (await disciplinesDAO.addDescipline({employee_id, subject_id},t))[0];
-            const answer = {json: answerJSON, questionnaire_id, discipline_id};
-            await answersDAO.addAnswer(answer,t);
-        })
-
-
+        return await sequelize.transaction(async t => {
+                const {id: group_id} = (await groupsDAO.addGroup(group, t))[0];
+                const {id: student_id} = (await studentsDAO.addStudent(Object.assign({}, student, {group_id}), t))[0];
+                const {id: employee_id} = (await employeesDAO.addEmployee(employee, t))[0];
+                const {id: subject_id} = (await subjectsDAO.addSubject(subject, t))[0];
+                const {id: discipline_id} = (await disciplinesDAO.addDescipline({employee_id, subject_id}, t))[0];
+                const answer = {json: answerJSON, questionnaire_id, discipline_id};
+                await answersDAO.addAnswer(answer, t);
+                await expireDAO.addExpire({student_id, discipline_id}, t);
+            }
+        )
+            .then(() => {
+                ctx.status = 200
+            })
+            .catch((e) => {
+               /* if (e.message === 'Validation error') {
+                    ctx.throw(400, 'Вы уже голосовали за эту дисциплину')
+                }*/
+                ctx.status = 400;
+                ctx.body = "Вы уже голосовали за эту дисциплину";
+            })
 
     }
 
