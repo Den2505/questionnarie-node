@@ -38,10 +38,7 @@ const generalRouter = {
             .then(() => {
                 ctx.status = 200
             })
-            .catch((e) => {
-               /* if (e.message === 'Validation error') {
-                    ctx.throw(400, 'Вы уже голосовали за эту дисциплину')
-                }*/
+            .catch(() => {
                 ctx.status = 400;
                 ctx.body = "Вы уже голосовали за эту дисциплину";
             })
